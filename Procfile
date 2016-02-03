@@ -1,1 +1,1 @@
-web: resizr -gzip
+web: resizr 
