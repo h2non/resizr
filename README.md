@@ -1,7 +1,7 @@
 # resizr
 
-A dead simple HTTP service developed in 1 hour for image resize/crop designed for easy integration with web browsers / HTTP clients.
-Supports JPEG, PNG and WEBP image formats.
+A dead simple HTTP service developed in 1 hour for image resizing/cropping. 
+Designed for easy integration from web apps and programmatic HTTP clients.
 
 Behind the scenes it's powered by [libvips](https://github.com/jcupitt/libvips) and [bimg](https://github.com/h2non/bimg).
 
