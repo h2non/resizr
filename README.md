@@ -1,4 +1,4 @@
-# resizr [![Go Report Card](http://goreportcard.com/badge/h2non/resizr)](http://goreportcard.com/report/h2non/resizr)
+# resizr [![Go Report Card](http://goreportcard.com/badge/h2non/resizr)](http://goreportcard.com/report/h2non/resizr) [![Heroku](https://img.shields.io/badge/Heroku-Deploy_Now-blue.svg)](https://heroku.com/deploy)
 
 A dead simple HTTP service developed in 1 hour for image resizing/cropping. 
 Designed for easy integration from web apps and programmatic HTTP clients.
