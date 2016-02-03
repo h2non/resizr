@@ -1,4 +1,4 @@
-# resizr
+# resizr [![Go Report Card](http://goreportcard.com/badge/h2non/resizr)](http://goreportcard.com/report/h2non/resizr)
 
 A dead simple HTTP service developed in 1 hour for image resizing/cropping. 
 Designed for easy integration from web apps and programmatic HTTP clients.
@@ -61,6 +61,16 @@ Options:
   -mrelease <num>           OS memory release inverval in seconds [default: 30]
   -cpus <num>               Number of used cpu cores.
                             (default for current machine is 8 cores)
+```
+
+Start the server:
+```bash
+resizr -p 8080
+```
+
+Then, from a web browser, try opening the following URL:
+```bash
+http://localhost:8080/crop/200x200/http://imgsv.imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-300mmf_35-56g_ed_vr/img/sample/sample4_l.jpg
 ```
 
 ## HTTP API
