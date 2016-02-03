@@ -98,6 +98,7 @@ func indexController(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 }
 
 func badRequest(w http.ResponseWriter, msg string) {
+	msg = strings.Replace(msg, "\"", "\\\"", -1)
 	w.Header().Set("Content-Type", "application/json")
 	w.WriteHeader(http.StatusBadRequest)
 	w.Write([]byte("{\"message\": \"" + msg + "\"}"))
