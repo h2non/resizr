@@ -14,7 +14,6 @@ type ServerOptions struct {
 	Port             int
 	Burst            int
 	Concurrency      int
-	HttpCacheTtl     int
 	HttpReadTimeout  int
 	HttpWriteTimeout int
 	CORS             bool
@@ -23,6 +22,7 @@ type ServerOptions struct {
 	ApiKey           string
 	CertFile         string
 	KeyFile          string
+	Placeholder      []byte
 }
 
 func Server(o ServerOptions) error {
@@ -50,36 +50,42 @@ func listenAndServe(s *http.Server, o ServerOptions) error {
 func NewServerMux(o ServerOptions) http.Handler {
 	mux := httprouter.New()
 	mux.GET("/", indexController)
-	mux.GET("/:operation/:size/*url", resizeController)
+	mux.GET("/:operation/:size/*url", resizeController(o))
 	return mux
 }
 
-func resizeController(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
-	if r.Method != "GET" {
-		badRequest(w, "method not allowed")
-		return
+func resizeController(o ServerOptions) func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+	return func(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
+		if r.Method != "GET" {
+			badRequest(w, "method not allowed")
+			return
+		}
+
+		width, height, err := parseDimensions(ps.ByName("size"))
+		if err != nil {
+			badRequest(w, "invalid width or height path expression")
+			return
+		}
+
+		debug("resize to %dx%d", width, height)
+		opts := Options{Width: width, Height: height}
+
+		image, err := Fetch(ps.ByName("url")[1:])
+		if err != nil {
+			failed(w, opts, o, err.Error())
+			return
+		}
+
+		image, err = Resize(image, opts)
+		if err != nil {
+			failed(w, opts, o, err.Error())
+			return
+		}
+
+		mime := GetImageMimeType(bimg.DetermineImageType(image))
+		w.Header().Set("Content-Type", mime)
+		w.Write(image)
 	}
-
-	image, err := Fetch(ps.ByName("url")[1:])
-	if err != nil {
-		badRequest(w, err.Error())
-		return
-	}
-
-	size := strings.Split(ps.ByName("size"), "x")
-	width, err := strconv.Atoi(size[0])
-	height, err2 := strconv.Atoi(size[1])
-	if err != nil || err2 != nil {
-		badRequest(w, "invalid width or height path expression")
-		return
-	}
-
-	opts := Options{Width: width, Height: height}
-	image, err = Resize(image, opts)
-
-	mime := GetImageMimeType(bimg.DetermineImageType(image))
-	w.Header().Set("Content-Type", mime)
-	w.Write(image)
 }
 
 func indexController(w http.ResponseWriter, r *http.Request, ps httprouter.Params) {
@@ -88,18 +94,43 @@ func indexController(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 		return
 	}
 
-	data := struct {
-		Version string `json:"version"`
-	}{Version: Version}
-	body, _ := json.Marshal(data)
-
+	body, _ := json.Marshal(CurrentVersions)
 	w.Header().Set("Content-Type", "application/json")
 	w.Write(body)
 }
 
-func badRequest(w http.ResponseWriter, msg string) {
-	msg = strings.Replace(msg, "\"", "\\\"", -1)
-	w.Header().Set("Content-Type", "application/json")
+func parseDimensions(value string) (int, int, error) {
+	size := strings.Split(value, "x")
+	width, err := strconv.Atoi(size[0])
+	if err != nil {
+		return 0, 0, err
+	}
+	height, err := strconv.Atoi(size[1])
+	return width, height, err
+}
+
+func failed(w http.ResponseWriter, opts Options, o ServerOptions, msg string) {
+	image := placeholder
+	if len(o.Placeholder) > 1 {
+		image = o.Placeholder
+	}
+
+	opts.Force = true
+	image, err := Resize(image, opts)
+	if err != nil {
+		badRequest(w, err.Error())
+		return
+	}
+
+	w.Header().Set("Content-Type", GetImageMimeType(bimg.DetermineImageType(image)))
+	w.Header().Set("Error", msg)
 	w.WriteHeader(http.StatusBadRequest)
-	w.Write([]byte("{\"message\": \"" + msg + "\"}"))
+	w.Write(image)
+}
+
+func badRequest(w http.ResponseWriter, msg string) {
+	w.Header().Set("Content-Type", "image/jpeg")
+	w.Header().Set("Error", msg)
+	w.WriteHeader(http.StatusBadRequest)
+	w.Write(placeholder)
 }

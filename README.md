@@ -17,12 +17,12 @@ If you need more versatility, I would recommend you start building something cus
 - Supports image resize with crop calculus.
 - Supports JPEG, PNG and WEBP formats and conversion between them.
 - Automatic image rotation based on EXIF orientation metadata.
+- Default image placeholder in case of processing error.
 - Image fetching and resizing.
 - No cache. Build your cache layer in front of it.
 
 ## Upcoming features
 
-- Default image placeholder in case of error.
 - API token based authorization
 - gzip responses
 - CORS support
@@ -41,17 +41,17 @@ resizr 0.1.0
 
 Usage:
   resizr -p 80
-  resizr -cors
+  resizr -placeholder image.jpg
 
 Options:
   -a <addr>                 bind address [default: *]
   -p <port>                 bind port [default: 9000]
   -h, -help                 output help
   -v, -version              output version
+  -placeholder <path>       placeholder image to use on error
   -cors                     Enable CORS support [default: false]
   -gzip                     Enable gzip compression [default: false]
   -key <key>                Define API key for authorization
-  -http-cache-ttl <num>     The TTL in seconds. Adds caching headers to locally served files.
   -http-read-timeout <num>  HTTP read timeout in seconds [default: 30]
   -http-write-timeout <num> HTTP write timeout in seconds [default: 30]
   -certfile <path>          TLS certificate file path
@@ -73,7 +73,22 @@ Then, from a web browser, try opening the following URL:
 http://localhost:8080/crop/200x200/http://imgsv.imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-300mmf_35-56g_ed_vr/img/sample/sample4_l.jpg
 ```
 
+Using it from HTML `img` tag is as simple as:
+```html
+<img src="http://localhost:8080/crop/200x200/http://imgsv.imaging.nikon.com/lineup/lens/zoom/normalzoom/af-s_dx_18-300mmf_35-56g_ed_vr/img/sample/sample4_l.jpg" />
+```
+
 ## HTTP API
+
+### Handling errors
+
+Since `resizr` has been designed to be used as public HTTP service, including web pages, the response MIME type must be respected in most scenarios,
+so the server will always reply with a placeholder image in case of error. 
+
+You can customize the placeholder image passing the `-placeholder` flag when starting `resizr`.
+
+If image resizing fails for some reason, a 400 Bad Request will be used as response status, but the `Content-Type` will always `image/*`.
+If you want to see the error details, you can see the error description in `Error` response header field.
 
 ### GET /
 Content-Type: `application/json`
@@ -89,11 +104,6 @@ Performs an image resize with implicit crop calculus to automatically fit to the
 Content-Type: `image/*`
 
 Performs an image resize with implicit crop calculus and enlarge, if necessary, to the desired resolution.
-
-### GET /enlarge/{width}x{height}/{imageUrl}
-Content-Type: `image/*`
-
-Performs an image resize as enlarge operation to the desired resolution.
 
 ## License
 
