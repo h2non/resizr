@@ -1,6 +1,9 @@
 package main
 
-import "gopkg.in/h2non/bimg.v0"
+import (
+	"errors"
+	"gopkg.in/h2non/bimg.v0"
+)
 
 type Options struct {
 	Width, Height int
@@ -8,7 +11,7 @@ type Options struct {
 	Operation     string
 }
 
-func Resize(image []byte, opts Options) (image []byte, err error) {
+func Resize(image []byte, opts Options) (buf []byte, err error) {
 	defer func() {
 		if r := recover(); r != nil {
 			switch value := r.(type) {
@@ -19,7 +22,7 @@ func Resize(image []byte, opts Options) (image []byte, err error) {
 			default:
 				err = errors.New("libvips internal error")
 			}
-			image = []byte{}
+			buf = []byte{}
 		}
 	}()
 
