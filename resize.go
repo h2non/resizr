@@ -8,7 +8,21 @@ type Options struct {
 	Operation     string
 }
 
-func Resize(image []byte, opts Options) ([]byte, error) {
+func Resize(image []byte, opts Options) (image []byte, err error) {
+	defer func() {
+		if r := recover(); r != nil {
+			switch value := r.(type) {
+			case error:
+				err = value
+			case string:
+				err = errors.New(value)
+			default:
+				err = errors.New("libvips internal error")
+			}
+			image = []byte{}
+		}
+	}()
+
 	params := bimg.Options{
 		Enlarge:      true,
 		NoAutoRotate: true,
@@ -17,6 +31,7 @@ func Resize(image []byte, opts Options) ([]byte, error) {
 		Force:        opts.Force,
 		Crop:         opts.Operation == "crop" || opts.Operation == "resize",
 	}
+
 	return bimg.Resize(image, params)
 }
 
