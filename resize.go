@@ -9,9 +9,10 @@ type Options struct {
 
 func Resize(image []byte, opts Options) ([]byte, error) {
 	params := bimg.Options{
-		Width:  opts.Width,
-		Height: opts.Height,
-		Crop:   opts.Operation == "crop",
+		Width:   opts.Width,
+		Height:  opts.Height,
+		Crop:    opts.Operation == "crop" || opts.Operation == "resize",
+		Enlarge: opts.Operation == "enlarge" || opts.Operation == "resize",
 	}
 	return bimg.Resize(image, params)
 }

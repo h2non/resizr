@@ -80,10 +80,20 @@ Content-Type: `application/json`
 
 Returns the server version. 
 
-### GET /resize/{width}x{height}/{imageUrl}
+### GET /crop/{width}x{height}/{imageUrl}
 Content-Type: `image/*`
 
 Performs an image resize with implicit crop calculus to automatically fit to the desired resolution.
+
+### GET /resize/{width}x{height}/{imageUrl}
+Content-Type: `image/*`
+
+Performs an image resize with implicit crop calculus and enlarge, if necessary, to the desired resolution.
+
+### GET /enlarge/{width}x{height}/{imageUrl}
+Content-Type: `image/*`
+
+Performs an image resize as enlarge operation to the desired resolution.
 
 ## License
 
