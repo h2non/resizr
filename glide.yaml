@@ -3,4 +3,4 @@ import:
 - package: gopkg.in/h2non/bimg.v0
   version: ^0.1.21
 - package: github.com/tj/go-debug
-  version: ff4a55a20a86994118644bbddc6a216da193cc13
+  version: master

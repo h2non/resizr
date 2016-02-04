@@ -68,7 +68,7 @@ func resizeController(o ServerOptions) func(w http.ResponseWriter, r *http.Reque
 		}
 
 		debug("resize to %dx%d", width, height)
-		opts := Options{Width: width, Height: height}
+		opts := Options{Width: width, Height: height, Operation: ps.ByName("operation")}
 
 		image, err := Fetch(ps.ByName("url")[1:])
 		if err != nil {
