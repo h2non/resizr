@@ -5,6 +5,8 @@ Designed for easy integration from web apps and programmatic HTTP clients.
 
 Behind the scenes it's powered by [libvips](https://github.com/jcupitt/libvips) and [bimg](https://github.com/h2non/bimg).
 
+`resizr` is currently used in production processing thoundands of images per day.
+
 ## Rationale
 
 I just created this to cover a very particular need. 
