@@ -23,8 +23,7 @@ If you need more versatility, I would recommend you start building something cus
 
 ## Upcoming features
 
-- API token based authorization
-- gzip responses
+- gzipped bodies
 - CORS support
 - Traffic throttle strategy
 
