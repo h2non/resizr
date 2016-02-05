@@ -1,6 +1,6 @@
 package: github.com/h2non/resizr
 import:
 - package: gopkg.in/h2non/bimg.v0
-  version: ^0.1.21
+  version: ^0.1.23
 - package: github.com/tj/go-debug
   version: master
