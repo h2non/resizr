@@ -87,7 +87,7 @@ so the server will always reply with a placeholder image in case of error.
 You can customize the placeholder image passing the `-placeholder` flag when starting `resizr`.
 
 If image resizing fails for some reason, a 400 Bad Request will be used as response status, but the `Content-Type` will always `image/*`.
-If you want to see the error details, you can see the error description in `Error` response header field.
+If you want to see the error details, you have it in the `Error` header field.
 
 ### GET /
 Content-Type: `application/json`
