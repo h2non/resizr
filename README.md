@@ -92,7 +92,7 @@ If you want to see the error details, you have it in the `Error` header field.
 ### GET /
 Content-Type: `application/json`
 
-Returns the server version. 
+Returns versions info. 
 
 ### GET /crop/{width}x{height}/{imageUrl}
 Content-Type: `image/*`
