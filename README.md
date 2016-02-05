@@ -23,8 +23,7 @@ If you need more versatility, I would recommend you start building something cus
 
 ## Upcoming features
 
-- API token based authorization
-- gzip responses
+- gzipped bodies
 - CORS support
 - Traffic throttle strategy
 
@@ -88,12 +87,12 @@ so the server will always reply with a placeholder image in case of error.
 You can customize the placeholder image passing the `-placeholder` flag when starting `resizr`.
 
 If image resizing fails for some reason, a 400 Bad Request will be used as response status, but the `Content-Type` will always `image/*`.
-If you want to see the error details, you can see the error description in `Error` response header field.
+If you want to see the error details, you have it in the `Error` header field.
 
 ### GET /
 Content-Type: `application/json`
 
-Returns the server version. 
+Returns versions info. 
 
 ### GET /crop/{width}x{height}/{imageUrl}
 Content-Type: `image/*`
