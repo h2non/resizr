@@ -27,12 +27,11 @@ func Resize(image []byte, opts Options) (buf []byte, err error) {
 	}()
 
 	params := bimg.Options{
-		Enlarge:      true,
-		NoAutoRotate: true,
-		Width:        opts.Width,
-		Height:       opts.Height,
-		Force:        opts.Force,
-		Crop:         opts.Operation == "crop" || opts.Operation == "resize",
+		Enlarge: true,
+		Width:   opts.Width,
+		Height:  opts.Height,
+		Force:   opts.Force,
+		Crop:    opts.Operation == "crop" || opts.Operation == "resize",
 	}
 
 	return bimg.Resize(image, params)
