@@ -96,19 +96,19 @@ Content-Type: `application/json`
 
 Returns versions info. 
 
-### GET /crop/{width?}x{height?}/{imageUrl}
+### GET /crop/{width}x{height?}/{imageUrl}
 Content-Type: `image/*`
 
 Performs an image resize with implicit crop calculus to automatically fit to the desired resolution.
 
-You must specify at least a width or height value.
+`height` value is optional.
 
-### GET /resize/{width?}x{height?}/{imageUrl}
+### GET /resize/{width}x{height?}/{imageUrl}
 Content-Type: `image/*`
 
 Performs an image resize with implicit crop calculus and enlarge, if necessary, to the desired resolution.
 
-You must specify at least a width or height value.
+`height` value is optional.
 
 ## License
 
