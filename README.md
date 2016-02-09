@@ -25,7 +25,7 @@ If you need more versatility, I would recommend you start building something cus
 
 ## Upcoming features
 
-- gzipped bodies
+- gzip responses
 - CORS support
 - Traffic throttle strategy
 
@@ -96,15 +96,19 @@ Content-Type: `application/json`
 
 Returns versions info. 
 
-### GET /crop/{width}x{height}/{imageUrl}
+### GET /crop/{width?}x{height?}/{imageUrl}
 Content-Type: `image/*`
 
 Performs an image resize with implicit crop calculus to automatically fit to the desired resolution.
 
-### GET /resize/{width}x{height}/{imageUrl}
+You must specify at least a width or height value.
+
+### GET /resize/{width?}x{height?}/{imageUrl}
 Content-Type: `image/*`
 
 Performs an image resize with implicit crop calculus and enlarge, if necessary, to the desired resolution.
+
+You must specify at least a width or height value.
 
 ## License
 

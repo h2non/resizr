@@ -100,12 +100,18 @@ func indexController(w http.ResponseWriter, r *http.Request, ps httprouter.Param
 }
 
 func parseDimensions(value string) (int, int, error) {
+	var width, height int
+
 	size := strings.Split(value, "x")
 	width, err := strconv.Atoi(size[0])
 	if err != nil {
 		return 0, 0, err
 	}
-	height, err := strconv.Atoi(size[1])
+
+	if len(size) > 1 {
+		height, err = strconv.Atoi(size[1])
+	}
+
 	return width, height, err
 }
 
