@@ -2,7 +2,7 @@ package main
 
 import "gopkg.in/h2non/bimg.v0"
 
-const Version = "0.1.1"
+const Version = "0.1.2"
 
 type Versions struct {
 	Version     string `json:"resizr"`
