@@ -28,7 +28,7 @@ func fetchImage(url *url.URL) ([]byte, error) {
 
 	buf, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return nil, fmt.Errorf("Unable to create image from response body: %s (url=%s)", req.URL.RequestURI(), err)
+		return nil, fmt.Errorf("Unable to create image from response body: %s (url=%s)", err, req.URL.RequestURI())
 	}
 	return buf, nil
 }
