@@ -1,1 +1,1 @@
-web: resizr -placeholder placeholder.png
+web: resizr 
